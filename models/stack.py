@@ -6,16 +6,17 @@ class Stack:
         return len(self.items) == 0
     
     def push(self, item):
-        self.items.append(item)
+        if item not in self.items:
+            self.items.append(item)
     
     def pop(self):
-        if not self.is_empty:
-            return self.items.pop()
+        if not self.is_empty():
+            self.items.pop()
         else:
             raise IndexError("pop from an empty stack")
     
     def peek(self):
-        if not self.is_empty:
+        if not self.is_empty():
             return self.items[-1]
         else:
             raise IndexError("peek from an empty stack")

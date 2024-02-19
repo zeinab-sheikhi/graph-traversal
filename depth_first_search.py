@@ -20,12 +20,29 @@ class DFS():
             if not self.marked_vertices[adj_vertex]:
                 self.traversal_tree.add_child(adj_vertex)
                 self.dfs(adj_vertex)
-        
-    def complete_dfs(self):
+
+    def with_stack(self, s):
+        self.stack.push(s)
+        while not self.stack.is_empty():
+            current_vertex = self.stack.peek()
+            self.stack.pop()
+            if not self.marked_vertices[current_vertex]:
+                self.mark_visited(current_vertex)
+                self.traversal_tree.add_child(current_vertex)
+                adjacent_vertices = self.graph[current_vertex]
+                for vertex in adjacent_vertices:
+                    if not self.marked_vertices[vertex]:
+                        self.stack.push(vertex)
+       
+    def complete_dfs(self, stack=False):
         forest = []
         for vertex in self.marked_vertices:
             if not self.marked_vertices[vertex]:
                 self.traversal_tree = Tree(node=vertex)
-                self.dfs(vertex)
+                if stack:
+                    self.with_stack(vertex)
+                else:
+                    self.dfs(vertex)
                 forest.append(self.traversal_tree)
         return forest
+    

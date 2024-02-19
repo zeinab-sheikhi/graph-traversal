@@ -21,6 +21,6 @@ graph2 = {
 }
 
 dfs = DFS(graph=graph2)
-forest = dfs.complete_dfs()
+forest = dfs.complete_dfs(stack=True)
 for tree in forest:
     print(tree)
