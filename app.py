@@ -1,4 +1,6 @@
 from depth_first_search import DFS
+from models.traversal_tree import draw_tree, print_tree
+
 
 graph1 = {
     "A": ['B', 'D'],
@@ -20,9 +22,12 @@ graph2 = {
     "7": ["6"],
 }
 
-dfs = DFS(graph=graph2)
+dfs = DFS(graph=graph1)
 dfs.complete_dfs(stack=False)
-print(dfs.topological_sorting)
-# print(dfs.forest)
-# for tree in dfs.forest:
-#     print(tree)
+print(dfs.parent)
+print(dfs.start_time)
+print(dfs.end_time)
+print(dfs.traversed_edges)
+print(dfs.edge_type)
+if not dfs.is_acyclic():
+    print(dfs.topological_sorting)
