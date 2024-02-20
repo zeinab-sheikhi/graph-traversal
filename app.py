@@ -21,6 +21,8 @@ graph2 = {
 }
 
 dfs = DFS(graph=graph2)
-forest = dfs.complete_dfs(stack=True)
-for tree in forest:
-    print(tree)
+dfs.complete_dfs(stack=False)
+print(dfs.topological_sorting)
+# print(dfs.forest)
+# for tree in dfs.forest:
+#     print(tree)
