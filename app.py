@@ -1,5 +1,4 @@
 from depth_first_search import DFS
-from models.traversal_tree import draw_tree, print_tree
 
 
 graph1 = {

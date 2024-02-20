@@ -1,5 +1,4 @@
 from models.stack import Stack
-from models.traversal_tree import Tree
 
 
 class DFS():
@@ -14,33 +13,19 @@ class DFS():
         self.traversed_edges = []
         self.start_time = {}
         self.end_time = {}
-        self.traversal_tree = None
-        self.forest = []
         self.topological_sorting = []
         self.time = 0
-        
-    def set_visited(self, vertex):
-        self.visited_vertices[vertex] = True
     
-    def set_start_time(self, vertex):
-        self.start_time[vertex] = self.time
-        self.time += 1
-    
-    def set_end_time(self, vertex):
-        self.end_time[vertex] = self.time
-        self.time += 1
+    def complete_dfs(self, stack=False):
+        for vertex in self.visited_vertices:
+            if not self.visited(vertex):
+                if stack:
+                    self.dfs_with_stack(vertex)
+                else:
+                    self.recursive_dfs(vertex)
+        self.topological_sorting.reverse()
+        self.set_edge_type()
 
-    def visited(self, vertex):
-        if self.visited_vertices[vertex]:
-            return True
-        return False    
-    
-    def is_acyclic(self):
-        for types in self.edge_type.values():
-            if "backward" not in types:
-                return True
-        return False
-    
     def recursive_dfs(self, vertex):
         self.set_visited(vertex)
         self.set_start_time(vertex)
@@ -53,6 +38,39 @@ class DFS():
         self.set_end_time(vertex)
         self.topological_sorting.append(vertex)
 
+    def set_visited(self, vertex):
+        self.visited_vertices[vertex] = True
+    
+    def set_start_time(self, vertex):
+        self.start_time[vertex] = self.time
+        self.time += 1
+    
+    def set_end_time(self, vertex):
+        self.end_time[vertex] = self.time
+        self.time += 1
+
+    def set_edge_type(self):
+        for edge in self.edges:
+            if edge not in self.traversed_edges:
+                node, neighbor = edge
+                if self.start_time[node] > self.start_time[neighbor] and self.end_time[node] < self.end_time[neighbor]:
+                    self.edge_type[(node, neighbor)] = "backward"
+                elif self.start_time[node] < self.start_time[neighbor] and self.end_time[node] > self.end_time[neighbor]:
+                    self.edge_type[(node, neighbor)] = "forward"
+                elif self.start_time[node] > self.start_time[neighbor] and self.end_time[node] > self.end_time[neighbor]:
+                    self.edge_type[(node, neighbor)] = "transversed"
+
+    def visited(self, vertex):
+        if self.visited_vertices[vertex]:
+            return True
+        return False    
+    
+    def is_acyclic(self):
+        for types in self.edge_type.values():
+            if "backward" not in types:
+                return True
+        return False
+    
     def dfs_with_stack(self, s):
         self.stack.push(s)
         while not self.stack.is_empty():
@@ -68,24 +86,3 @@ class DFS():
                         self.stack.push(vertex) 
                 self.set_end_time(current_vertex)         
        
-    def complete_dfs(self, stack=False):
-        for vertex in self.visited_vertices:
-            if not self.visited(vertex):
-                if stack:
-                    self.dfs_with_stack(vertex)
-                else:
-                    self.recursive_dfs(vertex)
-
-        self.topological_sorting.reverse()
-        self.set_edge_type()
-
-    def set_edge_type(self):
-        for edge in self.edges:
-            if edge not in self.traversed_edges:
-                node, neighbor = edge
-                if self.start_time[node] > self.start_time[neighbor] and self.end_time[node] < self.end_time[neighbor]:
-                    self.edge_type[(node, neighbor)] = "backward"
-                elif self.start_time[node] < self.start_time[neighbor] and self.end_time[node] > self.end_time[neighbor]:
-                    self.edge_type[(node, neighbor)] = "forward"
-                elif self.start_time[node] > self.start_time[neighbor] and self.end_time[node] > self.end_time[neighbor]:
-                    self.edge_type[(node, neighbor)] = "transversed"
