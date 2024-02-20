@@ -85,4 +85,3 @@ class DFS():
                         self.parent[vertex] = current_vertex
                         self.stack.push(vertex) 
                 self.set_end_time(current_vertex)         
-       

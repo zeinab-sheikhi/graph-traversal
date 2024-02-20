@@ -1,4 +1,5 @@
 from depth_first_search import DFS
+from utils.graph_utils import scc
 
 
 graph1 = {
@@ -21,12 +22,44 @@ graph2 = {
     "7": ["6"],
 }
 
-dfs = DFS(graph=graph1)
-dfs.complete_dfs(stack=False)
-print(dfs.parent)
-print(dfs.start_time)
-print(dfs.end_time)
-print(dfs.traversed_edges)
-print(dfs.edge_type)
-if not dfs.is_acyclic():
-    print(dfs.topological_sorting)
+graph3 = {
+    "1": ["3", "4"],
+    "2": ["4", "5"],
+    "3": ["4", "6", "7"],
+    "4": ["5", "7"],
+    "5": ["7", "8"],
+    "6": ["9"],
+    "7": ["9", "10"],
+    "8": ["10"],
+    "9": ["11", "12"],
+    "10": ["12", "13"],
+    "11": ["14"],
+    "12": ["14", "15", "16"],
+    "13": ["16"],
+    "14": ["15", "17"],
+    "15": ["16", "17", "18"],
+    "16": ["18"],
+    "17": [],
+    "18": [],
+}
+
+graph4 = {
+    "0": ["1"],
+    "1": ["2"],
+    "2": ["0"],
+    "3": ["1", "2", "4", "5"],
+    "4": ["5"],
+    "5": ["6"],
+    "6": ["4"],
+    "7": ["5", "6", "8"],
+    "8": ["7"],
+    "9": ["4", "7", "8"],
+}
+
+print(scc(graph2))
+# print(dfs.start_time)
+# print(dfs.end_time)
+# print(dfs.traversed_edges)
+# print(dfs.edge_type)
+# if dfs.is_acyclic():
+#     print(dfs.topological_sorting)
